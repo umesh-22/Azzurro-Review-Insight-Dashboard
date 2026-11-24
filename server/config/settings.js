@@ -2,6 +2,7 @@ import "dotenv/config";
 
 export const settings = {
   port: process.env.PORT || 4000,
+  allowedOrigins: (process.env.ALLOWED_ORIGINS || "http://localhost:5173,https://azzurro-review-dashboard.vercel.app").split(","),
   databaseUrl: process.env.DATABASE_URL,
   databaseSsl: (!/localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL) && { rejectUnauthorized: false }) || false,
   groqApiKey: process.env.GROQ_API_KEY,
