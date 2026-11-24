@@ -36,12 +36,19 @@ export default function RefreshBox() {
       <p className="text-slate-500">Reviews last updated</p>
       <p className="font-semibold text-slate-800">{status.data && timeAgo(latestUpdate(status.data.properties))}</p>
 
-      <button onClick={fetchNewReviews} disabled={running} className="mt-3 w-full rounded-lg bg-white border border-brand text-brand font-semibold py-2 hover:bg-brand-soft disabled:opacity-50">
-        {running && "Fetching…"}{!running && "Fetch new reviews"}
-      </button>
+      {status.data?.canFetch === false && (
+        <p className="mt-2 text-xs text-slate-500">New reviews are collected on the office computer and synced here.</p>
+      )}
 
-      {running && <p className="mt-2 text-xs text-amber-700">⏳ A browser window opens on the server computer. This can take a few minutes.</p>}
-      {!running && result && <p className={`mt-2 text-xs ${result.color}`}>{result.text}</p>}
+      {status.data?.canFetch && (
+        <>
+          <button onClick={fetchNewReviews} disabled={running} className="mt-3 w-full rounded-lg bg-white border border-brand text-brand font-semibold py-2 hover:bg-brand-soft disabled:opacity-50">
+            {running && "Fetching…"}{!running && "Fetch new reviews"}
+          </button>
+          {running && <p className="mt-2 text-xs text-amber-700">⏳ A browser window opens on the server computer. This can take a few minutes.</p>}
+          {!running && result && <p className={`mt-2 text-xs ${result.color}`}>{result.text}</p>}
+        </>
+      )}
     </div>
   );
 }

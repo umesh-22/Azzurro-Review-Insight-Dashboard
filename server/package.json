@@ -8,6 +8,7 @@
     "start": "node index.js",
     "db:setup": "node database/setup.js",
     "export": "node scripts/export.js",
+    "db:copy": "node scripts/copyToProd.js",
     "classify": "node scripts/classify.js",
     "scrape": "node scripts/scrape.js",
     "scrape:full": "node scripts/scrape.js --full",

@@ -64,7 +64,12 @@ async function scrapeWithRetry(browser, property, options, attempts = 3) {
     }
   }
 
-  await scrapeProperty(browser, property, counts, { ...options, fullScan: true });
+  try {
+    await scrapeProperty(browser, property, counts, { ...options, fullScan: true });
+  } catch (error) {
+    error.counts = counts;
+    throw error;
+  }
   return counts;
 }
 
@@ -89,7 +94,7 @@ export async function runScraper({ fullScan = false, order = "NEWEST_FIRST" } = 
       results.push({ property: property.name, ...counts });
       console.log(`${property.name}: ${counts.found} found, ${counts.inserted} new`);
     } catch (error) {
-      await failRun(runId, error);
+      await failRun(runId, error, error.counts);
       results.push({ property: property.name, error: shortError(error) });
       console.log(`${property.name}: failed (${shortError(error)})`);
     }

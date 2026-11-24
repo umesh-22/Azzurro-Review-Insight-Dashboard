@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS scrape_runs (
   error TEXT
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_scrape_runs_property_started ON scrape_runs (property_id, started_at);
 CREATE INDEX IF NOT EXISTS idx_reviews_property_date ON reviews (property_id, review_date);
 CREATE INDEX IF NOT EXISTS idx_reviews_classified ON reviews (classified);
 CREATE INDEX IF NOT EXISTS idx_review_topics_topic ON review_topics (topic);

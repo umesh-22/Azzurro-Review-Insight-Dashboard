@@ -15,9 +15,12 @@ export async function finishRun(runId, counts) {
   );
 }
 
-export async function failRun(runId, error) {
+export async function failRun(runId, error, counts = { found: 0, inserted: 0 }) {
   await query(
-    "UPDATE scrape_runs SET finished_at = now(), status = 'failed', error = $2 WHERE id = $1",
-    [runId, error.message.split("\n")[0]]
+    `UPDATE scrape_runs
+     SET finished_at = now(), found = $3, inserted = $4, error = $2,
+         status = CASE WHEN $4 > 0 THEN 'partial' ELSE 'failed' END
+     WHERE id = $1`,
+    [runId, error.message.split("\n")[0], counts.found, counts.inserted]
   );
 }

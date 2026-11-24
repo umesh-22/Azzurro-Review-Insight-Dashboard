@@ -5,8 +5,9 @@ import Panel from "../components/Panel.jsx";
 const statusText = {
   success: { text: "✅ Up to date", color: "text-emerald-700" },
   running: { text: "⏳ Fetching now", color: "text-amber-700" },
+  partial: { text: "⚠️ Partly collected. Booking.com stopped showing older reviews", color: "text-amber-700" },
   needs_attention: { text: "⚠️ No reviews found. Booking.com may have changed its page", color: "text-amber-700" },
-  failed: { text: "❌ Could not fetch. It will try again at the next update", color: "text-rose-700" }
+  failed: { text: "❌ Could not fetch. Press “Fetch new reviews” to try again", color: "text-rose-700" }
 };
 
 const notRunYet = { text: "Not fetched yet", color: "text-slate-500" };
@@ -16,7 +17,7 @@ export default function DataStatus() {
 
   return (
     <div className="space-y-6">
-      <Panel title="🔄 Review collection" hint="Reviews are collected from Booking.com when someone presses “Fetch new reviews” in the menu." loading={status.loading} error={status.error}>
+      <Panel title="🔄 Review collection" hint="Reviews are collected from Booking.com on the computer that runs the collector, then shown here." loading={status.loading} error={status.error}>
         <table className="w-full text-left">
           <thead className="text-sm text-slate-500 border-b border-slate-200">
             <tr>

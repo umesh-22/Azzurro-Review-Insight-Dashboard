@@ -5,6 +5,7 @@
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
     "browser:install": "npm --prefix server exec playwright install chromium",
     "db:setup": "npm run db:setup --prefix server",
+    "db:copy": "npm run db:copy --prefix server",
     "export": "npm run export --prefix server",
     "scrape": "npm run scrape --prefix server",
     "scrape:full": "npm run scrape:full --prefix server",

@@ -90,5 +90,20 @@ npm run dev
 npm run export        # writes data/sample_reviews.csv
 ```
 
+### Deployment (Vercel + Render + Supabase)
+
+| Part | Where | Settings |
+|---|---|---|
+| Database | Supabase | Use the **Session pooler** connection string. SSL is switched on automatically. |
+| API | Render | Root `server`, build `npm install`, start `npm start`. Env: `DATABASE_URL` (Supabase), `GROQ_API_KEY`, `NODE_VERSION=22`, `SCRAPER_ENABLED=false` |
+| Dashboard | Vercel | Root `client`, build `npm run build`, output `dist`. Env: `VITE_API_URL` = the Render URL |
+
+Hosted servers have no desktop, so review collection runs on a local computer:
+
+```bash
+npm run scrape        # collect new reviews into the local database
+npm run db:copy       # copy them to Supabase (PROD_DB); safe to repeat
+```
+
 ---
 
