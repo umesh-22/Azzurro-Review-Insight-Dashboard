@@ -10,6 +10,7 @@
     "scrape": "npm run scrape --prefix server",
     "scrape:full": "npm run scrape:full --prefix server",
     "scrape:oldest": "npm run scrape:oldest --prefix server",
+    "scrape:gaps": "npm run scrape:gaps --prefix server",
     "classify": "npm run classify --prefix server",
     "dev": "concurrently -n server,client \"npm run dev --prefix server\" \"npm run dev --prefix client\""
   },

@@ -12,7 +12,8 @@
     "classify": "node scripts/classify.js",
     "scrape": "node scripts/scrape.js",
     "scrape:full": "node scripts/scrape.js --full",
-    "scrape:oldest": "node scripts/scrape.js --oldest"
+    "scrape:oldest": "node scripts/scrape.js --oldest",
+    "scrape:gaps": "node scripts/scrape.js --oldest --fill-gap"
   },
   "dependencies": {
     "cors": "^2.8.6",

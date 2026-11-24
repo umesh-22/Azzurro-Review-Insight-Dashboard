@@ -32,12 +32,18 @@ async function collectPages(page, property, counts, options) {
     return inserted;
   }
 
+  function keepGoing(inserted, foundNew) {
+    return options.fullScan || inserted > 0 || (options.fillGap && !foundNew);
+  }
+
   await openReviews(page, property.url);
   let inserted = await save(await sortReviews(page, options.order));
+  let foundNew = inserted > 0;
 
-  while ((options.fullScan || inserted > 0) && (await hasNextPage(page))) {
+  while (keepGoing(inserted, foundNew) && (await hasNextPage(page))) {
     await pause();
     inserted = await save(await goToNextPage(page));
+    foundNew = foundNew || inserted > 0;
   }
 }
 
@@ -56,16 +62,16 @@ async function scrapeWithRetry(browser, property, options, attempts = 3) {
 
   for (let attempt = 1; attempt < attempts; attempt++) {
     try {
-      await scrapeProperty(browser, property, counts, { ...options, fullScan: options.fullScan || attempt > 1 });
+      await scrapeProperty(browser, property, counts, { ...options, fillGap: options.fillGap || attempt > 1 });
       return counts;
     } catch (error) {
-      console.log(`${property.name}: attempt ${attempt} failed (${shortError(error)}), retrying with full scan`);
+      console.log(`${property.name}: attempt ${attempt} failed (${shortError(error)}), retrying from where it stopped`);
       await pause();
     }
   }
 
   try {
-    await scrapeProperty(browser, property, counts, { ...options, fullScan: true });
+    await scrapeProperty(browser, property, counts, { ...options, fillGap: true });
   } catch (error) {
     error.counts = counts;
     throw error;
@@ -81,15 +87,15 @@ async function failAll(properties, error) {
   throw error;
 }
 
-export async function runScraper({ fullScan = false, order = "NEWEST_FIRST" } = {}) {
-  const properties = await query("SELECT * FROM properties ORDER BY id");
+export async function runScraper({ fullScan = false, fillGap = false, order = "NEWEST_FIRST", hotel = null } = {}) {
+  const properties = await query("SELECT * FROM properties WHERE $1::text IS NULL OR slug = $1 ORDER BY id", [hotel]);
   const browser = await openBrowser().catch((error) => failAll(properties, error));
   const results = [];
 
   for (const property of properties) {
     const runId = await startRun(property.id);
     try {
-      const counts = await scrapeWithRetry(browser, property, { fullScan, order });
+      const counts = await scrapeWithRetry(browser, property, { fullScan, fillGap, order });
       await finishRun(runId, counts);
       results.push({ property: property.name, ...counts });
       console.log(`${property.name}: ${counts.found} found, ${counts.inserted} new`);
