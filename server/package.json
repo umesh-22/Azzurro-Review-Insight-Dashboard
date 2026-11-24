@@ -10,7 +10,8 @@
     "export": "node scripts/export.js",
     "classify": "node scripts/classify.js",
     "scrape": "node scripts/scrape.js",
-    "scrape:full": "node scripts/scrape.js --full"
+    "scrape:full": "node scripts/scrape.js --full",
+    "scrape:oldest": "node scripts/scrape.js --oldest"
   },
   "dependencies": {
     "cors": "^2.8.6",

@@ -18,8 +18,8 @@ export async function openReviews(page, url) {
   await page.waitForSelector(sortSelect, { timeout: 30000 });
 }
 
-export async function sortByNewest(page) {
-  const [reviews] = await Promise.all([waitForReviews(page), page.selectOption(sortSelect, "NEWEST_FIRST")]);
+export async function sortReviews(page, order) {
+  const [reviews] = await Promise.all([waitForReviews(page), page.selectOption(sortSelect, order)]);
   return reviews;
 }
 

@@ -9,7 +9,7 @@ async function createDatabase() {
   const name = url.pathname.slice(1);
   url.pathname = "/postgres";
 
-  const client = new pg.Client({ connectionString: url.toString() });
+  const client = new pg.Client({ connectionString: url.toString(), ssl: settings.databaseSsl });
   await client.connect();
   const result = await client.query("SELECT 1 FROM pg_database WHERE datname = $1", [name]);
 

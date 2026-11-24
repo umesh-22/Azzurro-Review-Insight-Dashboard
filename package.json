@@ -8,6 +8,7 @@
     "export": "npm run export --prefix server",
     "scrape": "npm run scrape --prefix server",
     "scrape:full": "npm run scrape:full --prefix server",
+    "scrape:oldest": "npm run scrape:oldest --prefix server",
     "classify": "npm run classify --prefix server",
     "dev": "concurrently -n server,client \"npm run dev --prefix server\" \"npm run dev --prefix client\""
   },

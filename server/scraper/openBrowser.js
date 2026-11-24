@@ -16,7 +16,7 @@ export async function openBrowser() {
 
 export async function openTab(browser) {
   const page = await browser.newPage();
-  const blankTabs = browser.pages().filter((tab) => tab !== page && tab.url() === "about:blank");
-  await Promise.all(blankTabs.map((tab) => tab.close()));
+  const oldTabs = browser.pages().filter((tab) => tab !== page);
+  await Promise.all(oldTabs.map((tab) => tab.close().catch(() => {})));
   return page;
 }
